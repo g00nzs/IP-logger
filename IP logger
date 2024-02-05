@@ -1,0 +1,39 @@
+<?php
+// Get the visitor's IP address
+$ip = $_SERVER['REMOTE_ADDR'];
+
+// Replace 'YOUR_DISCORD_WEBHOOK_URL' with your actual Discord webhook URL
+$webhookUrl = 'YOUR_DISCORD_WEBHOOK_URL';
+
+// Prepare the message with the visitor's IP address and credit text
+$message = array(
+    'content' => '',
+    'embeds' => array(
+        array(
+            'title' => 'New Visitor',
+            'description' => "IP Address: $ip",
+            'color' => hexdec("3498db"), // You can set a color for the embed (optional)
+            'footer' => array(
+                'text' => 'https://github.com/g00nzs' // Do not remove
+            )
+        )
+    )
+);
+
+// Create a payload for the Discord webhook
+$payload = json_encode($message);
+
+// Initialize cURL session
+$ch = curl_init($webhookUrl);
+
+// Set cURL options to POST the payload
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+
+// Execute cURL session
+curl_exec($ch);
+
+// Close cURL session
+curl_close($ch);
+?>
